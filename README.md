@@ -1,1 +1,1 @@
-# EnhancedDataTables-Document
+# EnhancedDataTables
