@@ -17,18 +17,21 @@
     * [アセット](#アセット)
     * [エディタ](#エディタ)
     * [ノード](#ノード)
+    * [Data Table Group Mapper](#data-table-group-mapper)
   * [コンテキストメニュー](#コンテキストメニュー)
+* [サンプル](#サンプル)
 * [ライセンス](#ライセンス)
 * [作者](#作者)
 * [履歴](#履歴)
 
 ## 概要
 
-このプラグインは複数の機能が拡張されたデータテーブルアセットを追加します。
+このプラグインは拡張機能を備えた複数のデータテーブルを追加します。  
+出荷ビルドやテストビルドには含まれない開発専用の行を追加できるデータテーブルや、列挙体に基づいた行を生成するデータテーブルなどが含まれます。  
 
 ## 動作環境
 
-対象バージョン : 未定    
+対象バージョン : UE5.0 ~ 5.3    
 対象プラットフォーム : Windows, Mac, Linux (ランタイムモジュールはプラットフォームの制限無し)
 
 ## インストール
@@ -39,7 +42,7 @@
 
 ### Development Data Table
 
-`Development Data Table`はクックビルドとテストビルドの際に削除される行データを追加することができる拡張データテーブルアセットです。  
+`Development Data Table`はシッピングビルドとテストビルドの際に削除される開発時専用の行データを追加することができる拡張データテーブルアセットです。  
 
 
 #### ・アセット
@@ -97,6 +100,7 @@ public:
 
 ![CreateEnumBasedDataTable](https://github.com/Naotsun19B/EnhancedDataTables-Document/assets/51815450/813edae0-d365-4bde-9f2c-1c1e74259b91)
 
+コンテンツブラウザのコンテキストメニューのその他からアセットを作成することができます。  
 作成時に行の構造体を選択しますが、ここではC++で定義された`FEnumBasedDataTableRowBase`を継承した構造体か、`Development Data Table`と同様`bool`型の`bIsDevelopmentOnly`という名前の変数が定義されている構造体アセットのみが選択可能です。  
 同じく作成時に行名や順序の元となる列挙体を選択しますが、ここではC++で定義された列挙体と列挙体アセットの両方が選択可能です。  
 
@@ -160,8 +164,8 @@ public:
 ![GetEnumBasedDataTableRowFromEnum](https://github.com/Naotsun19B/EnhancedDataTables-Document/assets/51815450/4283cc24-87c4-46fa-803d-1dbe9897e80c)
 ![GetEnumBasedDataTableRowFromEnum_Assigned](https://github.com/Naotsun19B/EnhancedDataTables-Document/assets/51815450/60958eda-f722-4c68-82cd-efff3d673321)
 
-行の列挙体を指定して`Enum Based Data Table`から行のデータを取得することができます。
-`Enum Based Data Table`ピンに直接アセットを指定すると`Row Enum`ピンと`Out Row`ピンの型が紐づいたものに変わります。
+行の列挙体を指定して`Enum Based Data Table`から行のデータを取得することができます。  
+`Enum Based Data Table`ピンに直接アセットを指定すると`Row Enum`ピンと`Out Row`ピンの型が紐づいたものに変わります。  
 
 
 ### Grouped Data Table
@@ -211,9 +215,57 @@ public:
 ![GetGroupedDataTableRowsFromGroupId_Assigned](https://github.com/Naotsun19B/EnhancedDataTables-Document/assets/51815450/25812f27-dc03-45b6-b919-e9871ac7ff71)
 
 
-`Group Id`を指定して`Grouped Data Table`からそのグループに含まれる複数の行のデータを取得することができます。
-`Grouped Data Table`ピンに直接アセットを指定すると`Group Id`ピンと`Out Rows`ピンの型が紐づいたものに変わります。
+`Group Id`を指定して`Grouped Data Table`からそのグループに含まれる複数の行のデータを取得することができます。  
+`Grouped Data Table`ピンに直接アセットを指定すると`Group Id`ピンと`Out Rows`ピンの型が紐づいたものに変わります。  
 
+#### ・Data Table Group Mapper
+
+C++を使用する必要がありますが、`Grouped Data Table`以外の種類のデータテーブルでも特定のプロパティの値を`Group Id`のように扱い、一括でデータを取得できるようにするユーティリティクラステンプレートがあります。  
+
+```DataTableGroupMapper.h
+
+#include "GroupedDataTable/Utilities/DataTableGroupMapper.h"
+
+USTRUCT(BlueprintType)
+struct FTestDataTableRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FString TestString;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	uint8 TestByte = 3;
+};
+
+UCLASS()
+class UTestFunctions : public UBlueprintFunctionLibrary
+{
+	GENERATED_BODY()
+
+public:
+	UFUNCTION(BlueprintCallable)
+	static void TestDataTableGroupMapper(const UDataTable* DataTable, const uint8 TestByte);
+};
+```
+
+```DataTableGroupMapper.cpp
+void UTestFunctions::TestDataTableGroupMapper(const UDataTable* DataTable, const uint8 TestByte)
+{
+	const auto DataTableGroupMapper = MakeShared<EnhancedDataTables::TDataTableGroupMapper<uint8, FTestDataTableRow>>(DataTable, GET_MEMBER_NAME_CHECKED(FTestDataTableRow, TestByte));
+	const TArray<FName>& MultipleRowNameInGroup = DataTableGroupMapper->GetMultipleRowNameInGroup(TestByte);
+	const TArray<const FTestDataTableRow*>& MultipleRowDataInGroup = DataTableGroupMapper->GetMultipleRowDataInGroup(TestByte);
+	// Do something.
+}
+```
+
+`TDataTableGroupMapper`の`Group Id`として使用できる型は`Grouped Data Table`の`Group Id`として使用できる型よりも多く、下記の条件を満たしていれば使用可能です。  
+・配列型、マップ型、ポインタ型でないこと  
+・その型同士で比較ができること（`==`演算子が使用可能）  
+・LexFromStringのオーバロードが定義されていること  
+
+また、指定した型が`Group Id`として使用できるかどうかを判定する特性クラスである`TIsGroupId`も利用できます。  
 
 ### コンテキストメニュー
 
@@ -224,6 +276,13 @@ public:
 
 通常のデータテーブルアセットとこのプラグインで追加される拡張データテーブルアセットのコンテキストメニューから各データテーブル間の変換機能が利用できます。  
 また、`Enum Based Data Table`では元となる列挙体を差し替える機能も利用できます。
+
+## サンプル
+
+購入前に動作を確認できるようにサンプルプロジェクトのDevelopmentとShippingのパッケージがダウンロードできます。  
+また、サンプルプロジェクトのエディタ上のデータを確認できるようにブループリントグラフやデータテーブルを確認できる画像とソースコードもダウンロードできます。
+
+[サンプルをダウンロード](https://github.com/Naotsun19B/EnhancedDataTables-Document/releases/tag/Sample)
 
 ## ライセンス
 
