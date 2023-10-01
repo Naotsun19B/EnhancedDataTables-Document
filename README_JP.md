@@ -170,6 +170,8 @@ public:
 
 ### Grouped Data Table
 
+`Grouped Data Table`は行の構造体に含まれる`Group Id`を元に同じ値の複数の行の名前やデータを取得することができる拡張データテーブルアセットです。  
+
 #### ・アセット  
 
 ![CreateGroupedDataTable](https://github.com/Naotsun19B/EnhancedDataTables-Document/assets/51815450/ad47d4c0-b4b9-4f1e-bd73-3dbd89def155)

@@ -171,6 +171,8 @@ If you specify an asset directly to the `Enum Based Data Table` pin, the types o
 
 ### Grouped Data Table
 
+`Grouped Data Table` is an extended data table asset that allows you to obtain the names and data of multiple rows with the same value based on the `Group Id` included in the row structure.  
+
 #### ・Asset
 
 ![CreateGroupedDataTable](https://github.com/Naotsun19B/EnhancedDataTables-Document/assets/51815450/ad47d4c0-b4b9-4f1e-bd73-3dbd89def155)
