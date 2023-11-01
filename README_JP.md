@@ -1,5 +1,7 @@
 # EnhancedDataTables
 
+![Plugins](https://github.com/Naotsun19B/EnhancedDataTables-Document/assets/51815450/bf98dec5-e403-491d-bb52-e4ec8cb21113)
+
 <!--ts-->
 * [概要](#概要)
 * [動作環境](#動作環境)
