@@ -35,7 +35,8 @@ Target platform :  Windows, Mac, Linux (Runtime module has no platform restricti
 
 ## Installation
 
-IN-PREPARATION
+Install from the [marketplace](https://www.unrealengine.com/marketplace/en-US/product/20e3da7acc924ed1b0f018412a443c9a).  
+If the feature is not available after installing the plugin, it is possible that the plugin has not been enabled, so please check if the plugin is enabled from Edit > Plugins.
 
 ## Features And Usages
 
@@ -297,4 +298,5 @@ You can also download images and source code that allow you to see Blueprint gra
 
 ## History
 
-IN-PREPARATION
+- (2023/11/01) v1.0   
+  Publish plugin

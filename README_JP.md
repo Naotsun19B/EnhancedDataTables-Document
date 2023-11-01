@@ -36,7 +36,8 @@
 
 ## インストール
 
-準備中  
+[マーケットプレイス](https://www.unrealengine.com/marketplace/ja/product/20e3da7acc924ed1b0f018412a443c9a)からインストールしてください。  
+プラグインのインストール後に機能が使用できない場合は、プラグインが有効化されていない可能性がありますので、編集 > プラグイン からプラグインの有効のチェックが入っているかをご確認ください。
 
 ## 機能と使い方
 
@@ -296,4 +297,5 @@ void UTestFunctions::TestDataTableGroupMapper(const UDataTable* DataTable, const
 
 ## 履歴
 
-準備中
+- (2023/11/01) v1.0   
+  プラグインを公開  
