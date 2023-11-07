@@ -21,6 +21,7 @@
         * [Nodes](#nodes)
         * [Data Table Group Mapper](#data-table-group-mapper)
     * [Context Menu](#context-menu)
+    * [Import Options](#import-options)
 * [Sample](#sample)
 * [License](#license)
 * [Author](#Author)
@@ -283,6 +284,19 @@ Also available is `TIsGroupId`, a trait class that determines whether a given ty
 You can use the conversion function between each data table from the context menu of the regular data table asset and the extended data table asset added with this plugin.  
 Also, you can use the function to replace the original enumeration in `Enum Based Data Table` context menu.  
 
+### Import Options
+
+![DataTableOptions_Original](https://github.com/Naotsun19B/EnhancedDataTables-Document/assets/51815450/a581d47c-94db-4a90-a514-933eb44b12f9)
+
+Since the engine's standard import option from json or csv does not allow you to select the extended data table added by this plugin, we have added an import option with similar functionality.  
+
+![DataTableOptions_Idle](https://github.com/Naotsun19B/EnhancedDataTables-Document/assets/51815450/fa18a5b7-16ad-4f3c-a710-20b4fbde6c2c)
+![DataTableOptions_Menu](https://github.com/Naotsun19B/EnhancedDataTables-Document/assets/51815450/9d17b54e-18e6-4015-b9bf-1dd1541e5666)
+![DataTableOptions_Selected](https://github.com/Naotsun19B/EnhancedDataTables-Document/assets/51815450/0fd88a94-9468-4f02-9036-028b3443e7aa)
+
+Unlike the engine standard ones, structures and enumerations used in data tables can be selected after pressing the apply button, similar to the procedure for creating new assets.  
+Also, this can only be selected using engine standard import options such as curve tables, but if you press the Cancel button, the engine standard import options will be displayed, so please use them.  
+
 ## Sample
 
 You can download sample project development and shipping packages so that you can check the operation before purchasing.  
@@ -299,6 +313,11 @@ You can also download images and source code that allow you to see Blueprint gra
 [Naotsun](https://twitter.com/Naotsun_UE)
 
 ## History
+
+- (2023/11/07) v1.1   
+  Fixed a bug where the internal information of `Grouped Data Table` was not updated properly  
+  Added the ability to import extended data tables from json or csv  
+  Fixed so that re-import can be done with extended data table
 
 - (2023/11/01) v1.0   
   Publish plugin

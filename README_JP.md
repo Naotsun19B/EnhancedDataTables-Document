@@ -21,6 +21,7 @@
     * [ノード](#ノード)
     * [Data Table Group Mapper](#data-table-group-mapper)
   * [コンテキストメニュー](#コンテキストメニュー)
+  * [インポートオプション](#インポートオプション)
 * [サンプル](#サンプル)
 * [ライセンス](#ライセンス)
 * [作者](#作者)
@@ -282,6 +283,19 @@ void UTestFunctions::TestDataTableGroupMapper(const UDataTable* DataTable, const
 通常のデータテーブルアセットとこのプラグインで追加される拡張データテーブルアセットのコンテキストメニューから各データテーブル間の変換機能が利用できます。  
 また、`Enum Based Data Table`では元となる列挙体を差し替える機能も利用できます。
 
+### インポートオプション
+
+![DataTableOptions_Original](https://github.com/Naotsun19B/EnhancedDataTables-Document/assets/51815450/a581d47c-94db-4a90-a514-933eb44b12f9)
+
+エンジン標準のjsonやcsvからのインポートオプションではこのプラグインで追加される拡張データテーブルが選択できないため、同様の機能を持つインポートオプションを追加しています。  
+
+![DataTableOptions_Idle](https://github.com/Naotsun19B/EnhancedDataTables-Document/assets/51815450/fa18a5b7-16ad-4f3c-a710-20b4fbde6c2c)
+![DataTableOptions_Menu](https://github.com/Naotsun19B/EnhancedDataTables-Document/assets/51815450/9d17b54e-18e6-4015-b9bf-1dd1541e5666)
+![DataTableOptions_Selected](https://github.com/Naotsun19B/EnhancedDataTables-Document/assets/51815450/0fd88a94-9468-4f02-9036-028b3443e7aa)
+
+エンジン標準の物と違い、データテーブルで使う構造体や列挙体はApplyボタンを押した後に、新規でアセットを作る手順と同様に選択することができます。  
+また、カーブテーブルなどエンジン標準のインポートオプションでのみ選択できますが、Cancelボタンを押すと続いてエンジン標準のインポートオプションが表示されるため、そちらをご利用ください。  
+
 ## サンプル
 
 購入前に動作を確認できるようにサンプルプロジェクトのDevelopmentとShippingのパッケージがダウンロードできます。  
@@ -298,6 +312,11 @@ void UTestFunctions::TestDataTableGroupMapper(const UDataTable* DataTable, const
 [Naotsun](https://twitter.com/Naotsun_UE)
 
 ## 履歴
+
+- (2023/11/07) v1.1   
+  `Grouped Data Table`の内部情報が適切に更新されない不具合を修正した  
+  jsonやcsvから拡張データテーブルをインポートできる機能を追加した  
+  拡張データテーブルで再インポートが行えるように修正した  
 
 - (2023/11/01) v1.0   
   プラグインを公開  
