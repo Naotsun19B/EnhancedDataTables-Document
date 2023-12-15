@@ -45,8 +45,10 @@ If the feature is not available after installing the plugin, it is possible that
 
 ### Development Data Table
 
-`Development Data Table` is an extended data table asset that allows you to add development-only row data that is deleted during shipping builds and test builds.
+`Development Data Table` is an extended data table asset that allows you to add development-only row data that is deleted during shipping builds and test builds.  
+You can set build configurations that removes development-only row data from project settings.
 
+![DevelopmentDataTableSettings](https://github.com/Naotsun19B/EnhancedDataTables-Document/assets/51815450/ee19b660-1505-4809-bfb7-0c437fc67997)
 
 #### ・Asset
 
@@ -313,6 +315,10 @@ You can also download images and source code that allow you to see Blueprint gra
 [Naotsun](https://twitter.com/Naotsun_UE)
 
 ## History
+
+- (2023/12/16) v1.2   
+  Added ability to change build configuration from project settings that requires deleting development-only rows  
+  Fixed an issue where the development overlay would shift position when scrolling in the line editor  
 
 - (2023/11/07) v1.1   
   Fixed a bug where the internal information of `Grouped Data Table` was not updated properly  

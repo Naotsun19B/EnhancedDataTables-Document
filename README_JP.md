@@ -46,8 +46,10 @@
 
 ### Development Data Table
 
-`Development Data Table`はシッピングビルドとテストビルドの際に削除される開発時専用の行データを追加することができる拡張データテーブルアセットです。  
+`Development Data Table`はデフォルトでシッピングビルドとテストビルドの際に削除される開発時専用の行データを追加することができる拡張データテーブルアセットです。  
+プロジェクト設定から開発専用の行データを削除するビルド構成を設定することができます。  
 
+![DevelopmentDataTableSettings](https://github.com/Naotsun19B/EnhancedDataTables-Document/assets/51815450/ee19b660-1505-4809-bfb7-0c437fc67997)
 
 #### ・アセット
 
@@ -312,6 +314,10 @@ void UTestFunctions::TestDataTableGroupMapper(const UDataTable* DataTable, const
 [Naotsun](https://twitter.com/Naotsun_UE)
 
 ## 履歴
+
+- (2023/12/16) v1.2   
+  開発専用の行を削除する必要があるプロジェクト設定からビルド構成を変更する機能を追加した  
+  行エディターでスクロールするときに開発専用のオーバーレイの位置がズレる問題を修正した  
 
 - (2023/11/07) v1.1   
   `Grouped Data Table`の内部情報が適切に更新されない不具合を修正した  
