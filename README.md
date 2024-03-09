@@ -316,12 +316,20 @@ You can also download images and source code that allow you to see Blueprint gra
 
 ## History
 
+- (2024/03/09) v1.3  
+  Fixed an issue where import options were displayed even when re-importing  
+  Fixed an issue where data added using the duplicate button would disappear when the editor was closed  
+  Fixed an issue where the export and open source file items were not displayed in the asset context menu in UE 5.1 and earlier versions  
+  Fixed an issue where source files could not be set from the asset editor  
+  Fixed an issue where changing the position of already existing row data and restarting the editor would reset the changes  
+  Added group id property type to the asset registry tag of `Grouped Data Table`  
+
 - (2023/12/16) v1.2   
   Added ability to change build configuration from project settings that requires deleting development-only rows  
   Fixed an issue where the development overlay would shift position when scrolling in the line editor  
 
 - (2023/11/07) v1.1   
-  Fixed a bug where the internal information of `Grouped Data Table` was not updated properly  
+  Fixed an issue where the internal information of `Grouped Data Table` was not updated properly  
   Added the ability to import extended data tables from json or csv  
   Fixed so that re-import can be done with extended data table
 
