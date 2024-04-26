@@ -33,7 +33,7 @@ This plugin adds multiple data tables with extended functionality, including a d
 
 ## Requirement
 
-Target version : UE5.0 ~ 5.3  
+Target version : UE5.0 ~ 5.4  
 Target platform :  Windows, Mac, Linux (Runtime module has no platform restrictions)
 
 ## Installation
@@ -315,6 +315,10 @@ You can also download images and source code that allow you to see Blueprint gra
 [Naotsun](https://twitter.com/Naotsun_UE)
 
 ## History
+
+- (2024/04/24) v1.4  
+  Added support for UE5.4  
+  Fixed a bug that caused a crash when playing standalone  
 
 - (2024/03/09) v1.3  
   Fixed an issue where import options were displayed even when re-importing  
