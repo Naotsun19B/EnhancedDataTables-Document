@@ -315,6 +315,9 @@ void UTestFunctions::TestDataTableGroupMapper(const UDataTable* DataTable, const
 
 ## 履歴  
 
+- (2024/06/25) v1.5  
+  プロジェクトランチャーからパッケージを作成する際に開発専用データが削除されない不具合を修正しました  
+
 - (2024/04/24) v1.4  
   UE5.4に対応しました  
   スタンドアロンでプレイした際にクラッシュする不具合を修正しました  

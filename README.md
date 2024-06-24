@@ -316,6 +316,9 @@ You can also download images and source code that allow you to see Blueprint gra
 
 ## History
 
+- (2024/06/25) v1.5  
+  Fixed an issue where development-only data was not deleted when creating a package from the project launcher  
+
 - (2024/04/24) v1.4  
   Added support for UE5.4  
   Fixed a bug that caused a crash when playing standalone  
