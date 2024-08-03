@@ -316,6 +316,9 @@ You can also download images and source code that allow you to see Blueprint gra
 
 ## History
 
+- (2024/08/03) v1.6  
+  Fixed a bug that would cause a crash if changes were made to the structure asset that is the source of the enhanced data table asset while the editor of the enhanced data table asset was open
+
 - (2024/06/25) v1.5  
   Fixed an issue where development-only data was not deleted when creating a package from the project launcher  
 
