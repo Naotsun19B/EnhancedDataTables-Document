@@ -20,6 +20,10 @@
         * [Editor](#editor)
         * [Nodes](#nodes)
         * [Data Table Group Mapper](#data-table-group-mapper)
+    * [Data Table Row Coloration](#data-table-row-coloration)
+      * [Data Table Row Coloration implemented in plugin standard](#data-table-row-coloration-implemented-in-plugin-standard)
+      * [Implementation in C++](#implementation-in-c)
+      * [Implementation in Blueprint](#implementation-in-blueprint)
     * [Context Menu](#context-menu)
     * [Import Options](#import-options)
 * [Sample](#sample)
@@ -30,16 +34,20 @@
 ## Description
 
 This plugin adds multiple data tables with extended functionality, including a data table that allows you to add development-only rows that are not included in shipping and test builds, and a data table that generates enum-compliant rows.  
+Additionally, a feature will be added that allows users to arbitrarily determine the background and text color of each row in the editor.  
+
 
 ## Requirement
 
 Target version : UE5.0 ~ 5.4  
 Target platform :  Windows, Mac, Linux (Runtime module has no platform restrictions)
 
+
 ## Installation
 
 Install from the [marketplace](https://www.unrealengine.com/marketplace/en-US/product/20e3da7acc924ed1b0f018412a443c9a).  
 If the feature is not available after installing the plugin, it is possible that the plugin has not been enabled, so please check if the plugin is enabled from Edit > Plugins.
+
 
 ## Features And Usages
 
@@ -49,6 +57,7 @@ If the feature is not available after installing the plugin, it is possible that
 You can set build configurations that removes development-only row data from project settings.
 
 ![DevelopmentDataTableSettings](https://github.com/Naotsun19B/EnhancedDataTables-Document/assets/51815450/ee19b660-1505-4809-bfb7-0c437fc67997)
+
 
 #### ・Asset
 
@@ -139,13 +148,25 @@ public:
 };
 ```
 
-As shown in the sample code above, several meta specifiers are available for the enumeration that forms the basis of `Enum Based Data Table`.
+As shown in the sample code above, several meta specifiers are available for the enumeration that forms the basis of `Enum Based Data Table`.  
 
-|     *Name*      | *Description*                                                                                                                               |
-|:---------------:|:--------------------------------------------------------------------------------------------------------------------------------------------|
-| ExposeOnRowName | Adding this specifier to an element with the Hidden specifier will make it visible on the `Enum Based Data Table` editor.                   |
-| HiddenOnRowName | Adding this specifier to an element that does not have a Hidden specifier will cause it to be hidden on the `Enum Based Data Table` editor. |
-| DevelopmentOnly | If this specifier is added, the corresponding row data will not be cooked in the shipping and test builds.                                  |
+|         *Name*         | *Description*                                                                                                                               |
+|:----------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------|
+|    ExposeOnRowName     | Adding this specifier to an element with the Hidden specifier will make it visible on the `Enum Based Data Table` editor.                   |
+|    HiddenOnRowName     | Adding this specifier to an element that does not have a Hidden specifier will cause it to be hidden on the `Enum Based Data Table` editor. |
+|    DevelopmentOnly     | If this specifier is added, the corresponding row data will not be cooked in the shipping and test builds.                                  |
+| RowBackgroundTintColor | Specifies the background color of the corresponding row on the editor used by the `Data Table Row Coloration` function described later.     |
+|      RowTextColor      | Specifies the text color of the corresponding row on the editor used by the `Data Table Row Coloration` function described later.           |
+
+
+The following formats can be used when specifying colors with `RowBackgroundTintColor` and `RowTextColor`:  
+
+- Color name defined in `FLinearColor`. (White, Gray, Black, Transparent, Red, Green, Blue, Yellow)  
+- Hexadecimal color code starting with `#`.  
+- Comma-separated integer values arranged in "R,G,B,A" format.  
+- Comma-separated floating values arranged in "R,G,B,A" format.  
+
+If comma separated format, alpha is optional and can be ordered in any order by prepending RGBA= to the value.  
 
 
 #### ・Editor
@@ -179,6 +200,7 @@ If you specify an asset directly to the `Enum Based Data Table` pin, the types o
 
 `Grouped Data Table` is an extended data table asset that allows you to obtain the names and data of multiple rows with the same value based on the `Group Id` included in the row structure.  
 
+
 #### ・Asset
 
 ![CreateGroupedDataTable](https://github.com/Naotsun19B/EnhancedDataTables-Document/assets/51815450/ad47d4c0-b4b9-4f1e-bd73-3dbd89def155)
@@ -211,6 +233,7 @@ The following types can be used for `Group Id`. The type name in C++ and the typ
 
 In addition to these, you can also use enums (`Enum`) defined by C++ and enumeration type assets, and Pulldown structures added by the [Pulldown Builder](https://github.com/Naotsun19B/PulldownBuilder/blob/master/README.md).
 
+
 #### ・Editor
 
 ![GroupedDataTableEditor](https://github.com/Naotsun19B/EnhancedDataTables-Document/assets/51815450/fe3fd079-4d7c-443d-ba94-170f61fb3fb7)
@@ -226,6 +249,7 @@ Also, `Group Id` is editable like any other property.
 
 You can specify `Group Id` to retrieve data for multiple rows included in that group from `Grouped Data Table`.  
 If you specify an asset directly to the `Grouped Data Table` pin, the types of the `Group Id` and `Out Rows` pins will be linked.  
+
 
 #### ・Data Table Group Mapper
 
@@ -276,6 +300,81 @@ There are more types that can be used as `Group Id` of `TDataTableGroupMapper` t
 
 Also available is `TIsGroupId`, a trait class that determines whether a given type can be used as a `Group Id`.  
 
+
+### Data Table Row Coloration
+
+This is a function that allows you to determine the background color and text color of the rows on the editor of the extended data table added by this plugin based on arbitrary conditions such as row name, row data, row number, etc.  
+Also, when using C++, it is also possible to change the image used for the background of the row.   
+To change the background color or text color, you need to create a class that inherits from `UDataTableRowColoration` in C++ or Blueprint and implement the conditions.   
+
+![Details-DDT_UserDefinedStruct](https://github.com/user-attachments/assets/1242ab85-a6f4-44ef-980a-39125e3bbb4d)
+
+You can apply `UDataTableRowColoration`, which is implemented in the plugin standard or implemented by user, by opening the details panel of the data table editor and setting it to `Row Coloration Class`.
+
+
+#### Data Table Row Coloration implemented in plugin standard
+
+|                *Name*                 |           C++ Class Name           | *Description*                                                                                                                                                                    |
+|:-------------------------------------:|:----------------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Development Data Table Row Coloration | UDevelopmentDataTableRowColoration | Class set as standard in `Development Data Table`. <br>Changes the background image and text color of rows only during development.                                              |
+| Enum Based Data Table Row Coloration  |  UEnumBasedDataTableRowColoration  | Class set as standard for `Enum Based Data Table`. <br>Enables changing the background tint and text color from the meta specifier of the underlying enumeration defined in C++. |
+
+
+#### Implementation in C++
+
+Please inherit `UDataTableRowColoration` or the class implemented in the plug-in standard and override the functions below according to your needs.  
+
+|      *Function Name*      | *Description*                                   |
+|:-------------------------:|:------------------------------------------------|
+|   Get Background Brush    | Returns the background image brush for the row. |
+| Get Background Tint Color | Returns the background tint color for the row.  |      
+|      Get Text Color       | Returns the text color for the row.             |
+
+Below is the implementation of the background tint color of `UDevelopmentDataTableRowColoration`.  
+
+```DevelopmentDataTableRowColoration.cpp
+FSlateColor UDevelopmentDataTableRowColoration::GetBackgroundTintColor_Implementation(
+	const UDataTable* DataTable,
+	const FName& RowName,
+	const FInstancedStruct& RowData,
+	const int32 RowIndex
+) const
+{
+	check(IsValid(DataTable));
+	
+	const bool bIsDevelopmentOnly = UDevelopmentDataTableFunctionLibrary::IsDevelopmentOnly(Cast<UDevelopmentDataTable>(DataTable), RowName);
+	if (!bIsDevelopmentOnly)
+	{
+		return Super::GetBackgroundTintColor_Implementation(DataTable, RowName, RowData, RowIndex);
+	}
+
+	const bool bIsOddRow = IsOddRow(RowIndex);
+	return (bIsOddRow ? OddDevelopmentOnlyBackgroundTintColor : EvenDevelopmentOnlyBackgroundTintColor);
+}
+```
+
+#### Implementation in Blueprint
+
+Create a Blueprint class that inherits `Data Table Row Coloration` or a class implemented in the plugin standard.  
+
+![DataTableRowColoration_Simple](https://github.com/user-attachments/assets/6ac94b07-602d-4176-9279-fe37f6fc3415)
+
+You can create a Blueprint class that inherits the class implemented in the plug-in standard and change the properties to change the color.  
+
+![DataTableRowColoration_Complex](https://github.com/user-attachments/assets/bc01a31c-7caa-4c32-ab4f-275d5546d43e)
+![BP_GroupedDataTableRowColoration-GetBackgroundTintColor](https://github.com/user-attachments/assets/a99b8291-0e2a-4d9a-b1a1-afd49bc9eb2a)
+
+You can also override and implement the functions below according to your needs in the Blueprint class you created.  
+In the image above, the colors are changed for each type of `Group Id` in the `Grouped Data Table`.  
+
+|      *Function Name*      | *Description*                                   |
+|:-------------------------:|:------------------------------------------------|
+| Get Background Tint Color | Returns the background tint color for the row.  |      
+|      Get Text Color       | Returns the text color for the row.             |
+
+The argument `Raw Data` is of `Instanced Struct` type, so use the `Get Instanced Struct Value` function to convert it to any row structure type.  
+
+
 ### Context Menu
 
 ![DataTableContextMenu](https://github.com/Naotsun19B/EnhancedDataTables-Document/assets/51815450/6e3c5caa-0f75-4593-9377-653a663d86fe)
@@ -285,6 +384,7 @@ Also available is `TIsGroupId`, a trait class that determines whether a given ty
 
 You can use the conversion function between each data table from the context menu of the regular data table asset and the extended data table asset added with this plugin.  
 Also, you can use the function to replace the original enumeration in `Enum Based Data Table` context menu.  
+
 
 ### Import Options
 
@@ -299,6 +399,7 @@ Since the engine's standard import option from json or csv does not allow you to
 Unlike the engine standard ones, structures and enumerations used in data tables can be selected after pressing the apply button, similar to the procedure for creating new assets.  
 Also, this can only be selected using engine standard import options such as curve tables, but if you press the Cancel button, the engine standard import options will be displayed, so please use them.  
 
+
 ## Sample
 
 You can download sample project development and shipping packages so that you can check the operation before purchasing.  
@@ -306,15 +407,21 @@ You can also download images and source code that allow you to see Blueprint gra
 
 [Download Sample](https://github.com/Naotsun19B/EnhancedDataTables-Document/releases/tag/Sample)
 
+
 ## License
 
 [MIT License](https://en.wikipedia.org/wiki/MIT_License)
+
 
 ## Author
 
 [Naotsun](https://twitter.com/Naotsun_UE)
 
+
 ## History
+
+- (2024/08/04) v1.7  
+  Added `Data Table Row Coloration` that allows users to decide the background and text color of each row in the extended data table asset editor using arbitrary conditions.  
 
 - (2024/08/03) v1.6  
   Fixed a bug that would cause a crash if changes were made to the structure asset that is the source of the enhanced data table asset while the editor of the enhanced data table asset was open

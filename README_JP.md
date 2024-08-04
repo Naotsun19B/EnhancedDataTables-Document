@@ -20,27 +20,35 @@
     * [エディタ](#エディタ)
     * [ノード](#ノード)
     * [Data Table Group Mapper](#data-table-group-mapper)
+  * [Data Table Row Coloration](#data-table-row-coloration)
+    * [プラグイン標準で実装されているData Table Row Coloration](#プラグイン標準で実装されているdata-table-row-coloration)
+    * [C++での実装](#cでの実装)
+    * [Blueprintでの実装](#blueprintでの実装)
   * [コンテキストメニュー](#コンテキストメニュー)
   * [インポートオプション](#インポートオプション)
 * [サンプル](#サンプル)
 * [ライセンス](#ライセンス)
 * [作者](#作者)
-* [履歴](#履歴)
+* [履歴](#履歴-)
 
 ## 概要
 
 このプラグインは拡張機能を備えた複数のデータテーブルを追加します。  
 出荷ビルドやテストビルドには含まれない開発専用の行を追加できるデータテーブルや、列挙体に基づいた行を生成するデータテーブルなどが含まれます。  
+また、エディタで各行の背景とテキストの色をユーザーが任意の条件で決定できる機能も追加されます。  
+
 
 ## 動作環境
 
 対象バージョン : UE5.0 ~ 5.4    
 対象プラットフォーム : Windows, Mac, Linux (ランタイムモジュールはプラットフォームの制限無し)
 
+
 ## インストール
 
 [マーケットプレイス](https://www.unrealengine.com/marketplace/ja/product/20e3da7acc924ed1b0f018412a443c9a)からインストールしてください。  
 プラグインのインストール後に機能が使用できない場合は、プラグインが有効化されていない可能性がありますので、編集 > プラグイン からプラグインの有効のチェックが入っているかをご確認ください。
+
 
 ## 機能と使い方
 
@@ -50,6 +58,7 @@
 プロジェクト設定から開発専用の行データを削除するビルド構成を設定することができます。  
 
 ![DevelopmentDataTableSettings](https://github.com/Naotsun19B/EnhancedDataTables-Document/assets/51815450/ee19b660-1505-4809-bfb7-0c437fc67997)
+
 
 #### ・アセット
 
@@ -114,13 +123,13 @@ public:
 UENUM(BlueprintType)
 enum class ETestEnumBasedDataTableSource : uint8
 {
-	ItemA,
+	ItemA UMETA(RowBackgroundTintColor = "Red"),
 	ItemB UMETA(Hidden, ExposeOnRowName),
-	ItemC,
+	ItemC UMETA(RowTextColor = "#FF1493FF"),
 	ItemD UMETA(HiddenOnRowName),
-	ItemE,
+	ItemE UMETA(RowBackgroundTintColor = "B=255,G=10,R=20"),
 	ItemF UMETA(DevelopmentOnly),
-	ItemG,
+	ItemG UMETA(RowBackgroundTintColor = "0.5f,0.1f,0.5f,0.9f"),
 	ItemH UMETA(Hidden),
 };
 
@@ -140,11 +149,23 @@ public:
 
 上記のサンプルコードにもある通り、`Enum Based Data Table`の元となる列挙体ではいくつかのメタ指定子が利用可能です。  
 
-|      *名前*       | *説明*                                                                         |
-|:---------------:|:-----------------------------------------------------------------------------|
-| ExposeOnRowName | Hidden 指定子が指定されている要素にこの指定子を追加すると、`Enum Based Data Table`エディタ上では表示されるようになります。 |
-| HiddenOnRowName | Hidden 指定子を持たない要素にこの指定子を追加すると、`Enum Based Data Table`エディタ上では非表示になります。        |
-| DevelopmentOnly | この指定子を追加すると、対応する行データはシッピングビルドおよびテストビルドではクックされません。                            |
+|          *名前*          | *説明*                                                                         |
+|:----------------------:|:-----------------------------------------------------------------------------|
+|    ExposeOnRowName     | Hidden 指定子が指定されている要素にこの指定子を追加すると、`Enum Based Data Table`エディタ上では表示されるようになります。 |
+|    HiddenOnRowName     | Hidden 指定子を持たない要素にこの指定子を追加すると、`Enum Based Data Table`エディタ上では非表示になります。        |
+|    DevelopmentOnly     | この指定子を追加すると、対応する行データはシッピングビルドおよびテストビルドではクックされません。                            |
+| RowBackgroundTintColor | 後述する`Data Table Row Coloration`にてエディタ上で対応する行の背景の色合いを指定します。                   |
+|      RowTextColor      | 後述する`Data Table Row Coloration`にてエディタ上で対応する行のテキストの色を指定します。                   |
+
+
+`RowBackgroundTintColor`と`RowTextColor`で色を指定する際に下記のフォーマットが使用できます。  
+
+- `FLinearColor`で定義されている色の名前（White, Gray, Black, Transparent, Red, Green, Blue, Yellow）  
+- `#`から始まるカラーコード  
+- 「R,G,B,A」形式で配列されたカンマ区切りの整数値  
+- 「R,G,B,A」形式で配列されたカンマ区切りの浮動小数点数値  
+
+カンマ区切り形式の場合、アルファはオプションであり、値の先頭に`RGBA=`を追加することで任意の順序で並べられます。
 
 
 #### ・エディタ
@@ -177,6 +198,7 @@ public:
 ### Grouped Data Table
 
 `Grouped Data Table`は行の構造体に含まれる`Group Id`を元に同じ値の複数の行の名前やデータを取得することができる拡張データテーブルアセットです。  
+
 
 #### ・アセット  
 
@@ -225,6 +247,7 @@ public:
 
 `Group Id`を指定して`Grouped Data Table`からそのグループに含まれる複数の行のデータを取得することができます。  
 `Grouped Data Table`ピンに直接アセットを指定すると`Group Id`ピンと`Out Rows`ピンの型が紐づいたものに変わります。  
+
 
 #### ・Data Table Group Mapper
 
@@ -275,6 +298,80 @@ void UTestFunctions::TestDataTableGroupMapper(const UDataTable* DataTable, const
 
 また、指定した型が`Group Id`として使用できるかどうかを判定する特性クラスである`TIsGroupId`も利用できます。  
 
+
+### Data Table Row Coloration
+
+このプラグインによって追加される拡張データテーブルのエディタ上の行の背景の色合いやテキストの色を行名、行データ、行番号などから任意の条件で決定できる機能です。  
+また、C++を用いる場合は行の背景に使用されている画像を変更することも可能です。  
+背景の色合いやテキストの色を変更するには、C++もしくはBlueprintで`UDataTableRowColoration`を継承したクラスを作成して条件を実装する必要があります。  
+
+![Details-DDT_UserDefinedStruct](https://github.com/user-attachments/assets/1242ab85-a6f4-44ef-980a-39125e3bbb4d)
+
+ユーザーが実装した、もしくはプラグイン標準で実装されている`UDataTableRowColoration`をデータテーブルエディタの詳細パネルを開き、`Row Coloration Class`に設定することで適用できます。  
+
+
+#### プラグイン標準で実装されているData Table Row Coloration
+
+|                 *名前*                  |               C++クラス名               | *説明*                                                                                          |
+|:-------------------------------------:|:-----------------------------------:|:----------------------------------------------------------------------------------------------|
+| Development Data Table Row Coloration | UDevelopmentDataTableRowColoration  | `Development Data Table`に標準で設定されているクラス。<br>開発時専用の行の背景の画像とテキストの色を変更します。                        |
+| Enum Based Data Table Row Coloration  |  UEnumBasedDataTableRowColoration   | `Enum Based Data Table`に標準で設定されているクラス。<br>C++で定義された元となる列挙体のメタ指定子から背景の色合いとテキストの色を変更できるようにします。  |
+
+
+#### C++での実装
+
+`UDataTableRowColoration`もしくはプラグイン標準で実装されているクラスを継承し、用途に合わせて下記の関数をオーバーライドしてください。  
+
+|           *関数名*           | *説明*                   |
+|:-------------------------:|:-----------------------|
+|   Get Background Brush    | 行の背景の画像を返します。          |
+| Get Background Tint Color | 行の背景の画像に適用される色合いを返します。 |      
+|      Get Text Color       | 行のテキストの色を返します。         |
+
+下記は`UDevelopmentDataTableRowColoration`の背景の色合いの実装です。
+
+```DevelopmentDataTableRowColoration.cpp
+FSlateColor UDevelopmentDataTableRowColoration::GetBackgroundTintColor_Implementation(
+	const UDataTable* DataTable,
+	const FName& RowName,
+	const FInstancedStruct& RowData,
+	const int32 RowIndex
+) const
+{
+	check(IsValid(DataTable));
+	
+	const bool bIsDevelopmentOnly = UDevelopmentDataTableFunctionLibrary::IsDevelopmentOnly(Cast<UDevelopmentDataTable>(DataTable), RowName);
+	if (!bIsDevelopmentOnly)
+	{
+		return Super::GetBackgroundTintColor_Implementation(DataTable, RowName, RowData, RowIndex);
+	}
+
+	const bool bIsOddRow = IsOddRow(RowIndex);
+	return (bIsOddRow ? OddDevelopmentOnlyBackgroundTintColor : EvenDevelopmentOnlyBackgroundTintColor);
+}
+```
+
+#### Blueprintでの実装
+
+`Data Table Row Coloration`もしくはプラグイン標準で実装されているクラスを継承したBlueprintクラスを作成してください。
+
+![DataTableRowColoration_Simple](https://github.com/user-attachments/assets/6ac94b07-602d-4176-9279-fe37f6fc3415)
+
+プラグイン標準で実装されているクラスを継承したBlueprintクラスを作成し、プロパティを変更して色合いを変更できます。  
+
+![DataTableRowColoration_Complex](https://github.com/user-attachments/assets/bc01a31c-7caa-4c32-ab4f-275d5546d43e)
+![BP_GroupedDataTableRowColoration-GetBackgroundTintColor](https://github.com/user-attachments/assets/a99b8291-0e2a-4d9a-b1a1-afd49bc9eb2a)
+
+作成したBlueprintクラスで用途に合わせて下記の関数をオーバーライドして実装することもできます。  
+上記画像は`Grouped Data Table`の`Group Id`の種類ごとに色を変更しています。  
+
+|           *関数名*           | *説明*                   |
+|:-------------------------:|:-----------------------|
+| Get Background Tint Color | 行の背景の画像に適用される色合いを返します。 |      
+|      Get Text Color       | 行のテキストの色を返します。         |
+
+引数の`Raw Data`は`Instanced Struct`型のため、`Get Instanced Struct Value`関数を使用して任意の行構造体の型に変換してください。  
+
 ### コンテキストメニュー
 
 ![DataTableContextMenu](https://github.com/Naotsun19B/EnhancedDataTables-Document/assets/51815450/6e3c5caa-0f75-4593-9377-653a663d86fe)
@@ -284,6 +381,7 @@ void UTestFunctions::TestDataTableGroupMapper(const UDataTable* DataTable, const
 
 通常のデータテーブルアセットとこのプラグインで追加される拡張データテーブルアセットのコンテキストメニューから各データテーブル間の変換機能が利用できます。  
 また、`Enum Based Data Table`では元となる列挙体を差し替える機能も利用できます。
+
 
 ### インポートオプション
 
@@ -298,6 +396,7 @@ void UTestFunctions::TestDataTableGroupMapper(const UDataTable* DataTable, const
 エンジン標準の物と違い、データテーブルで使う構造体や列挙体はApplyボタンを押した後に、新規でアセットを作る手順と同様に選択することができます。  
 また、カーブテーブルなどエンジン標準のインポートオプションでのみ選択できますが、Cancelボタンを押すと続いてエンジン標準のインポートオプションが表示されるため、そちらをご利用ください。  
 
+
 ## サンプル
 
 購入前に動作を確認できるようにサンプルプロジェクトのDevelopmentとShippingのパッケージがダウンロードできます。  
@@ -305,15 +404,21 @@ void UTestFunctions::TestDataTableGroupMapper(const UDataTable* DataTable, const
 
 [サンプルをダウンロード](https://github.com/Naotsun19B/EnhancedDataTables-Document/releases/tag/Sample)
 
+
 ## ライセンス
 
 [MITライセンス](https://ja.wikipedia.org/wiki/MIT_License)
+
 
 ## 作者
 
 [Naotsun](https://twitter.com/Naotsun_UE)
 
+
 ## 履歴  
+
+- (2024/08/04) v1.7  
+  拡張データテーブルアセットのエディタで各行の背景とテキストの色をユーザーが任意の条件で決定できる`Data Table Row Coloration`を追加しました  
 
 - (2024/08/03) v1.6  
   拡張データテーブルアセットのエディタを開いた状態で拡張データテーブルアセットの元となる構造体アセットに変更を加えるとクラッシュする不具合を修正しました  
