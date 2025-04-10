@@ -40,7 +40,7 @@
 
 ## 動作環境
 
-対象バージョン : UE5.0 ~ 5.4    
+対象バージョン : UE5.1 ~ 5.5    
 対象プラットフォーム : Windows, Mac, Linux (ランタイムモジュールはプラットフォームの制限無し)
 
 
@@ -416,6 +416,10 @@ FSlateColor UDevelopmentDataTableRowColoration::GetBackgroundTintColor_Implement
 
 
 ## 履歴  
+
+- (2025/04/11) v1.8  
+  UE5.5に対応しました  
+  開発専用データをクックするかの判定に失敗した際に対象のアセット名をログ出力するようにしました  
 
 - (2024/08/04) v1.7  
   拡張データテーブルアセットのエディタで各行の背景とテキストの色をユーザーが任意の条件で決定できる`Data Table Row Coloration`を追加しました  

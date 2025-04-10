@@ -39,7 +39,7 @@ Additionally, a feature will be added that allows users to arbitrarily determine
 
 ## Requirement
 
-Target version : UE5.0 ~ 5.4  
+Target version : UE5.1 ~ 5.5  
 Target platform :  Windows, Mac, Linux (Runtime module has no platform restrictions)
 
 
@@ -419,6 +419,10 @@ You can also download images and source code that allow you to see Blueprint gra
 
 
 ## History
+
+- (2025/04/11) v1.8  
+  Added support for UE5.5  
+  Changed to log the target asset name when it fails to determine whether to cook development-only data  
 
 - (2024/08/04) v1.7  
   Added `Data Table Row Coloration` that allows users to decide the background and text color of each row in the extended data table asset editor using arbitrary conditions.  
