@@ -40,7 +40,7 @@
 
 ## 動作環境
 
-対象バージョン : UE5.1 ~ 5.5    
+対象バージョン : UE5.1 ~ 5.6    
 対象プラットフォーム : Windows, Mac, Linux (ランタイムモジュールはプラットフォームの制限無し)
 
 
@@ -56,8 +56,56 @@
 
 `Development Data Table`はデフォルトでシッピングビルドとテストビルドの際に削除される開発時専用の行データを追加することができる拡張データテーブルアセットです。  
 プロジェクト設定から開発専用の行データを削除するビルド構成を設定することができます。  
+また、Unreal Automation ToolのBuildCookRunでクックする場合はプロジェクト設定の`Custom Unreal Automation Tool DLL`のインストールボタンでUnreal Automation ToolのDLLをカスタムバージョンに置き換えてください。  
 
-![DevelopmentDataTableSettings](https://github.com/Naotsun19B/EnhancedDataTables-Document/assets/51815450/ee19b660-1505-4809-bfb7-0c437fc67997)
+![DevelopmentDataTableSettings](https://github.com/user-attachments/assets/4024258a-24a4-4d56-8ebe-9ca0f8f84e22)
+
+GithubからダウンロードしたエンジンバージョンやJenkinsなどのワークフローでDLLの置き換えができない場合は下記の要件に基づいてUnreal Automation ToolのC#コードを変更してください。  
+
+・BuildCookRunのクック処理の前にプロジェクトのIntermediateフォルダ以下にBuildCookRunClientConfigsToBuildという名前(拡張子無し)のファイルを作成する  
+・そのファイルにコマンドライン引数で指定されたクライアントのビルド構成の文字列を保存する  
+
+・実装例  
+Engine\Source\Programs\AutomationTool\Scripts\BuildCookRun.Automation.cs (line:224)
+```BuildCookRun.Automation.cs
+protected void DoBuildCookRun(ProjectParams Params)
+{
+    int WorkingCL = -1;
+    if (P4Enabled && GlobalCommandLine.Submit && AllowSubmit)
+    {
+        WorkingCL = P4.CreateChange(P4Env.Client, String.Format("{0} build from changelist {1}", Params.ShortProjectName, P4Env.Changelist));
+    }
+
+    // ----- 追加コード -----
+    List<string> ClientConfigStringsToBuild = new List<string>();
+    foreach (var ClientConfigToBuild in Params.ClientConfigsToBuild)
+    {
+        ClientConfigStringsToBuild.Add(ClientConfigToBuild.ToString());
+    }
+
+    string ProjectDirectory = Path.GetDirectoryName(Params.RawProjectPath.FullName);
+    string ClientConfigsToBuildFilename = Path.Combine(ProjectDirectory, "Intermediate", "BuildCookRunClientConfigsToBuild");
+    File.WriteAllLines(ClientConfigsToBuildFilename, ClientConfigStringsToBuild);
+    // ----- 追加コード -----
+
+    Project.Build(this, Params, WorkingCL, ProjectBuildTargets.All);
+    Project.Cook(Params);
+    Project.CopyBuildToStagingDirectory(Params);
+    Project.Package(Params, WorkingCL);
+    Project.Archive(Params);
+    Project.Deploy(Params);
+    PrintRunTime();
+    Project.Run(Params);
+    Project.GetFile(Params);
+
+    // Check everything in!
+    if (WorkingCL != -1)
+    {
+        int SubmittedCL;
+        P4.Submit(WorkingCL, out SubmittedCL, true, true);
+    }
+}
+```
 
 
 #### ・アセット
@@ -416,6 +464,11 @@ FSlateColor UDevelopmentDataTableRowColoration::GetBackgroundTintColor_Implement
 
 
 ## 履歴  
+
+- (2025/06/08) v1.9  
+  UE5.5に対応しました  
+  エディタ環境設定が正常に保存されない不具合の修正を行いました  
+  UnrealAutomationToolのBuildCookRunからクックを行った際に正常に開発専用の行データを削除できない不具合の修正を行いました  
 
 - (2025/04/11) v1.8  
   UE5.5に対応しました  

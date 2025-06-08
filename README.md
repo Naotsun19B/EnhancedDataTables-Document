@@ -39,7 +39,7 @@ Additionally, a feature will be added that allows users to arbitrarily determine
 
 ## Requirement
 
-Target version : UE5.1 ~ 5.5  
+Target version : UE5.1 ~ 5.6  
 Target platform :  Windows, Mac, Linux (Runtime module has no platform restrictions)
 
 
@@ -54,9 +54,56 @@ If the feature is not available after installing the plugin, it is possible that
 ### Development Data Table
 
 `Development Data Table` is an extended data table asset that allows you to add development-only row data that is deleted during shipping builds and test builds.  
-You can set build configurations that removes development-only row data from project settings.
+Also, if you are using Unreal Automation Tool's BuildCookRun to cook, use the `Custom Unreal Automation Tool DLL` install button in the project settings to replace the Unreal Automation Tool DLL with a custom Replace the Unreal Automation Tool DLL with a custom version.  
 
-![DevelopmentDataTableSettings](https://github.com/Naotsun19B/EnhancedDataTables-Document/assets/51815450/ee19b660-1505-4809-bfb7-0c437fc67997)
+![DevelopmentDataTableSettings](https://github.com/user-attachments/assets/4024258a-24a4-4d56-8ebe-9ca0f8f84e22)
+
+If the engine version downloaded from Github or a workflow such as Jenkins does not replace the DLL, please modify the Unreal Automation Tool C# code based on the following requirements.  
+
+・Create a file named BuildCookRunClientConfigsToBuild (without extension) under the Intermediate folder of the project before the BuildCookRun cook process  
+・Save the client build configuration string specified in the command-line arguments to that file  
+
+・Implementation Example  
+Engine\Source\Programs\AutomationTool\Scripts\BuildCookRun.Automation.cs (line:224)
+```BuildCookRun.Automation.cs
+protected void DoBuildCookRun(ProjectParams Params)
+{
+    int WorkingCL = -1;
+    if (P4Enabled && GlobalCommandLine.Submit && AllowSubmit)
+    {
+        WorkingCL = P4.CreateChange(P4Env.Client, String.Format("{0} build from changelist {1}", Params.ShortProjectName, P4Env.Changelist));
+    }
+
+    // ----- Modifications -----
+    List<string> ClientConfigStringsToBuild = new List<string>();
+    foreach (var ClientConfigToBuild in Params.ClientConfigsToBuild)
+    {
+        ClientConfigStringsToBuild.Add(ClientConfigToBuild.ToString());
+    }
+
+    string ProjectDirectory = Path.GetDirectoryName(Params.RawProjectPath.FullName);
+    string ClientConfigsToBuildFilename = Path.Combine(ProjectDirectory, "Intermediate", "BuildCookRunClientConfigsToBuild");
+    File.WriteAllLines(ClientConfigsToBuildFilename, ClientConfigStringsToBuild);
+    // ----- Modifications -----
+
+    Project.Build(this, Params, WorkingCL, ProjectBuildTargets.All);
+    Project.Cook(Params);
+    Project.CopyBuildToStagingDirectory(Params);
+    Project.Package(Params, WorkingCL);
+    Project.Archive(Params);
+    Project.Deploy(Params);
+    PrintRunTime();
+    Project.Run(Params);
+    Project.GetFile(Params);
+
+    // Check everything in!
+    if (WorkingCL != -1)
+    {
+        int SubmittedCL;
+        P4.Submit(WorkingCL, out SubmittedCL, true, true);
+    }
+}
+```
 
 
 #### ・Asset
@@ -419,6 +466,11 @@ You can also download images and source code that allow you to see Blueprint gra
 
 
 ## History
+
+- (2025/06/08) v1.9  
+  Added support for UE5.6  
+  Fixed a bug where editor preference was not saved correctly  
+  Fixed a bug where it was not possible to successfully delete row data for development when cooking from UnrealAutomationTool's BuildCookRun  
 
 - (2025/04/11) v1.8  
   Added support for UE5.5  
