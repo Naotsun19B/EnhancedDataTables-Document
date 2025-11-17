@@ -39,7 +39,7 @@ Additionally, a feature will be added that allows users to arbitrarily determine
 
 ## Requirement
 
-Target version : UE5.1 ~ 5.6  
+Target version : UE5.1 ~ 5.7  
 Target platform :  Windows, Mac, Linux (Runtime module has no platform restrictions)
 
 
@@ -466,6 +466,9 @@ You can also download images and source code that allow you to see Blueprint gra
 
 
 ## History
+
+- (2025/11/18) v2.0  
+  Added support for UE5.7  
 
 - (2025/06/08) v1.9  
   Added support for UE5.6  

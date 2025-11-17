@@ -40,7 +40,7 @@
 
 ## 動作環境
 
-対象バージョン : UE5.1 ~ 5.6    
+対象バージョン : UE5.1 ~ 5.7    
 対象プラットフォーム : Windows, Mac, Linux (ランタイムモジュールはプラットフォームの制限無し)
 
 
@@ -465,8 +465,11 @@ FSlateColor UDevelopmentDataTableRowColoration::GetBackgroundTintColor_Implement
 
 ## 履歴  
 
+- (2025/11/18) v2.0  
+  UE5.7に対応しました
+
 - (2025/06/08) v1.9  
-  UE5.5に対応しました  
+  UE5.6に対応しました  
   エディタ環境設定が正常に保存されない不具合の修正を行いました  
   UnrealAutomationToolのBuildCookRunからクックを行った際に正常に開発専用の行データを削除できない不具合の修正を行いました  
 
