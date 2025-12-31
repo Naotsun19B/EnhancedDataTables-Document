@@ -1,3 +1,7 @@
+![UE Version](https://img.shields.io/badge/Unreal%20Engine-5.1--5.7-0e1128?logo=unrealengine&logoColor=white)
+[![License: Fab Standard License (Fab EULA)](https://img.shields.io/badge/license-Fab%20Standard%20License%20%28Fab%20EULA%29-blue)](https://www.fab.com/eula)
+[![X (formerly Twitter) Follow](https://img.shields.io/twitter/follow/Naotsun_UE?style=social)](https://twitter.com/Naotsun_UE)
+
 # EnhancedDataTables
 
 ![Plugins](https://github.com/Naotsun19B/EnhancedDataTables-Document/assets/51815450/bf98dec5-e403-491d-bb52-e4ec8cb21113)
@@ -455,7 +459,9 @@ FSlateColor UDevelopmentDataTableRowColoration::GetBackgroundTintColor_Implement
 
 ## ライセンス
 
-[MITライセンス](https://ja.wikipedia.org/wiki/MIT_License)
+本リポジトリはドキュメントのみを含みます。プラグイン本体のソースコード／バイナリは含みません。  
+プラグイン本体は Fab 上で配布され、利用者には [Fab Standard License (Fab EULA)](https://www.fab.com/ja/eula) に基づいて提供されます。  
+特に明記がない限り、本リポジトリ内のドキュメントの著作権は © 2023-2026 Naotsun に帰属し、無断転載は禁止です。
 
 
 ## 作者

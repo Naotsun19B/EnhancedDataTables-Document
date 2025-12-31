@@ -1,3 +1,7 @@
+![UE Version](https://img.shields.io/badge/Unreal%20Engine-5.1--5.7-0e1128?logo=unrealengine&logoColor=white)
+[![License: Fab Standard License (Fab EULA)](https://img.shields.io/badge/license-Fab%20Standard%20License%20%28Fab%20EULA%29-blue)](https://www.fab.com/eula)
+[![X (formerly Twitter) Follow](https://img.shields.io/twitter/follow/Naotsun_UE?style=social)](https://twitter.com/Naotsun_UE)
+
 # EnhancedDataTables
 
 ![Plugins](https://github.com/Naotsun19B/EnhancedDataTables-Document/assets/51815450/bf98dec5-e403-491d-bb52-e4ec8cb21113)
@@ -457,7 +461,9 @@ You can also download images and source code that allow you to see Blueprint gra
 
 ## License
 
-[MIT License](https://en.wikipedia.org/wiki/MIT_License)
+This repository contains documentation only. No plugin source code or binaries are provided here.  
+The plugin itself is distributed on Fab and is licensed to end users under the [Fab Standard License (Fab EULA)](https://www.fab.com/eula).  
+Unless explicitly stated otherwise, all documentation content in this repository is © 2023-2026 Naotsun. All rights reserved.
 
 
 ## Author
