@@ -473,6 +473,10 @@ Unless explicitly stated otherwise, all documentation content in this repository
 
 ## History
 
+- (2026/04/08) v2.1  
+  Fixed a crash caused by a serialization size mismatch when packaging in UE5.7  
+  Fixed a bug in the `Enum Based Data Table` editor where the UI would flicker and the Import/Export buttons would stop working  
+
 - (2025/11/18) v2.0  
   Added support for UE5.7  
 

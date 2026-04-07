@@ -471,6 +471,10 @@ FSlateColor UDevelopmentDataTableRowColoration::GetBackgroundTintColor_Implement
 
 ## 履歴  
 
+- (2026/04/08) v2.1  
+  UE5.7でパッケージングを行うとシリアライズサイズのミスマッチによりクラッシュする不具合を修正しました  
+  `Enum Based Data Table`のエディタでUIがちらついたりインポート・エクスポートボタンが機能しなくなる不具合を修正しました  
+
 - (2025/11/18) v2.0  
   UE5.7に対応しました
 
