@@ -1,4 +1,4 @@
-![UE Version](https://img.shields.io/badge/Unreal%20Engine-5.1--5.7-0e1128?logo=unrealengine&logoColor=white)
+![UE Version](https://img.shields.io/badge/Unreal%20Engine-5.1--5.8-0e1128?logo=unrealengine&logoColor=white)
 [![License: Fab Standard License (Fab EULA)](https://img.shields.io/badge/License-Fab%20Standard%20License%20%28Fab%20EULA%29-blue)](https://www.fab.com/eula)
 [![X (formerly Twitter) Follow](https://img.shields.io/twitter/follow/Naotsun_UE?style=social)](https://twitter.com/Naotsun_UE)
 
@@ -44,7 +44,7 @@
 
 ## 動作環境
 
-対象バージョン : UE5.1 ~ 5.7    
+対象バージョン : UE5.1 ~ 5.8    
 対象プラットフォーム : Windows, Mac, Linux (ランタイムモジュールはプラットフォームの制限無し)
 
 
@@ -470,6 +470,15 @@ FSlateColor UDevelopmentDataTableRowColoration::GetBackgroundTintColor_Implement
 
 
 ## 履歴  
+
+- (2026/06/21) v2.2  
+  UE5.8に対応しました  
+  macOSのUE5.7以降でアセットの新規作成・インポート・差分表示など各種操作が利用できるようになりました  
+  特定条件下でデータテーブルの変更時やパッケージング時にクラッシュする可能性のあった不具合を修正しました  
+  エディタを長時間使用すると拡張機能の内部状態が解放されない不具合（メモリリーク）を修正しました  
+  `Enum Based Data Table`で無効な行の追加・削除操作が行われた際に、何が無視されたかをログに警告として出力するようになりました  
+  `Grouped Data Table`の`GetMultipleRowDataInGroup`テンプレート関数（C++）が誤った結果を返す不具合を修正しました  
+  `Pulldown Builder`との連携を有効化するには、プロジェクトの`.uproject`の`Plugins`欄で`Pulldown Builder`を明示的に有効化する必要があるよう変更しました  
 
 - (2026/04/08) v2.1  
   UE5.7でパッケージングを行うとシリアライズサイズのミスマッチによりクラッシュする不具合を修正しました  

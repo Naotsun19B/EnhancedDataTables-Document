@@ -1,4 +1,4 @@
-![UE Version](https://img.shields.io/badge/Unreal%20Engine-5.1--5.7-0e1128?logo=unrealengine&logoColor=white)
+![UE Version](https://img.shields.io/badge/Unreal%20Engine-5.1--5.8-0e1128?logo=unrealengine&logoColor=white)
 [![License: Fab Standard License (Fab EULA)](https://img.shields.io/badge/License-Fab%20Standard%20License%20%28Fab%20EULA%29-blue)](https://www.fab.com/eula)
 [![X (formerly Twitter) Follow](https://img.shields.io/twitter/follow/Naotsun_UE?style=social)](https://twitter.com/Naotsun_UE)
 
@@ -43,7 +43,7 @@ Additionally, a feature will be added that allows users to arbitrarily determine
 
 ## Requirement
 
-Target version : UE5.1 ~ 5.7  
+Target version : UE5.1 ~ 5.8  
 Target platform :  Windows, Mac, Linux (Runtime module has no platform restrictions)
 
 
@@ -472,6 +472,15 @@ Unless explicitly stated otherwise, all documentation content in this repository
 
 
 ## History
+
+- (2026/06/21) v2.2  
+  Added support for UE5.8  
+  On macOS, asset operations such as creation, import and diff are now available on UE5.7 and later  
+  Fixed potential crashes that could occur during data table edits or packaging under specific conditions  
+  Fixed a memory leak where editor extension state was not released after long editing sessions  
+  Invalid row add/remove operations on `Enum Based Data Table` now emit log warnings explaining what was ignored  
+  Fixed a bug where `Grouped Data Table`'s templated `GetMultipleRowDataInGroup` (C++) returned incorrect results  
+  `Pulldown Builder` integration now requires explicitly enabling `Pulldown Builder` in the project's `.uproject` `Plugins` section  
 
 - (2026/04/08) v2.1  
   Fixed a crash caused by a serialization size mismatch when packaging in UE5.7  
