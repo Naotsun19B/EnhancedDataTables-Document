@@ -475,7 +475,6 @@ Unless explicitly stated otherwise, all documentation content in this repository
 
 - (2026/06/21) v2.2  
   Added support for UE5.8  
-  On macOS, asset operations such as creation, import and diff are now available on UE5.7 and later  
   Fixed potential crashes that could occur during data table edits or packaging under specific conditions  
   Fixed a memory leak where editor extension state was not released after long editing sessions  
   Invalid row add/remove operations on `Enum Based Data Table` now emit log warnings explaining what was ignored  
